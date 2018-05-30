@@ -2,6 +2,15 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Nick Bushby</Authors>
+    <Company>Nomadeon Software LLC</Company>
+    <Description>Lightweight, persisted, thread safe, (optionally) transactional, FIFO queue built on LiteDB.</Description>
+    <Copyright>2018 by Nomadeon Software LLC</Copyright>
+    <PackageProjectUrl>http://nomadeon.com/2018/06/14/litequeue/</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/NomadeonSoftwareLLC/LiteQueue</RepositoryUrl>
+    <RepositoryType>Git</RepositoryType>
+    <PackageTags>LiteDB, MSMQ, Queue</PackageTags>
+    <PackageLicenseUrl>https://github.com/NomadeonSoftwareLLC/LiteQueue/blob/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
   <ItemGroup>
