@@ -48,38 +48,40 @@ For further reading:
 
 Here's a quick start C# code snippet using transactional logic. See the unit tests for more usage.
 
-    // LiteQueue depends on LiteDB. You can save other things to same database.
-    using (var db = new LiteDatabase("Queue.db"))
-    {
-        // Creates a "logs" collection in LiteDB. You can also pass a user defined object.
-        var logs = new LiteQueue<string>(db, "logs");
+[code language="csharp"]
+// LiteQueue depends on LiteDB. You can save other things to same database.
+using (var db = new LiteDatabase("Queue.db"))
+{
+	// Creates a "logs" collection in LiteDB. You can also pass a user defined object.
+	var logs = new LiteQueue<string>(db, "logs");
 
-        // Recommended on startup to reset anything that was checked out but not committed or aborted. 
-        // Or call CurrentCheckouts to inspect them and abort yourself. See github page for
-        // notes regarding duplicate messages.
-        logs.ResetOrhpans();
+	// Recommended on startup to reset anything that was checked out but not committed or aborted. 
+	// Or call CurrentCheckouts to inspect them and abort yourself. See github page for
+	// notes regarding duplicate messages.
+	logs.ResetOrhpans();
 
-        // Adds record to queue
-        logs.Enqueue("Test");
+	// Adds record to queue
+	logs.Enqueue("Test");
 
-        // Get next item from queue. Marks it as checked out such that other threads that 
-        // call Checkout will not see it - but does not remove it from the queue.
-        var record = logs.Dequeue();
+	// Get next item from queue. Marks it as checked out such that other threads that 
+	// call Checkout will not see it - but does not remove it from the queue.
+	var record = logs.Dequeue();
 
-        try
-        {
-            // Do something that may potentially fail, i.e. a network call
-            // ...
+	try
+	{
+		// Do something that may fail, i.e. a network call
+		// ...
 
-            // Removes record from queue
-            logs.Commit(record);
-        }
-        catch
-        {
-            // Returns the record to the queue
-            logs.Abort(record);
-        }
-    }
+		// Removes record from queue
+		logs.Commit(record);
+	}
+	catch
+	{
+		// Returns the record to the queue
+		logs.Abort(record);
+	}
+}
+[/code]
 
 ### License
 
