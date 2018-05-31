@@ -87,6 +87,27 @@ namespace LiteQueueTests
         }
 
         [TestMethod]
+        public void Fifo()
+        {
+            var logs = CreateQueue<int>();
+
+            const int count = 1000;
+
+            for (int i = 0; i < count; i++)
+            {
+                logs.Enqueue(i);
+            }
+
+            for (int i = 0; i < count; i++)
+            {
+                int next = logs.Dequeue().Payload;
+                Assert.AreEqual(i, next);
+            }
+
+            Assert.AreEqual(0, logs.Count());
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
         public void CurrentCheckouts()
         {

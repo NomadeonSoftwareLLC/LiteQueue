@@ -110,6 +110,28 @@ namespace LiteQueueTests
         }
 
         [TestMethod]
+        public void Fifo()
+        {
+            var logs = CreateQueue<int>();
+
+            const int count = 1000;
+
+            for (int i = 0; i < count; i++)
+            {
+                logs.Enqueue(i);
+            }
+
+            for (int i = 0; i < count; i++)
+            {
+                var next = logs.Dequeue();
+                Assert.AreEqual(i, next.Payload);
+                logs.Commit(next);
+            }
+
+            Assert.AreEqual(0, logs.Count());
+        }
+
+        [TestMethod]
         public void CurrentCheckouts()
         {
             var logs = CreateQueue<string>();
