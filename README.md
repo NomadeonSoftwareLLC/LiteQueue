@@ -48,7 +48,7 @@ For further reading:
 
 Here's a quick start C# code snippet using transactional logic. See the unit tests for more usage.
 
-[code language="csharp"]
+```csharp
 // LiteQueue depends on LiteDB. You can save other things to same database.
 using (var db = new LiteDatabase("Queue.db"))
 {
@@ -81,7 +81,7 @@ using (var db = new LiteDatabase("Queue.db"))
 		logs.Abort(record);
 	}
 }
-[/code]
+```
 
 ### License
 
