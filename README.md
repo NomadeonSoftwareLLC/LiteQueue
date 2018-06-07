@@ -9,9 +9,9 @@ One option is to install something like [ZeroMQ](https://en.wikipedia.org/wiki/Z
 
 So, it was time to explore creating one. It was not necessary to fully re-invent this wheel. In particular, I did not want to roll my own persistence layer. I came across [LiteDB](http://www.litedb.org/), an embedded NoSQL database specifically for .NET. It behaved quite nicely wrapped within queue logic, which I call LiteQueue.
 
-### Package Management
+### Nuget
 
-TODO: nuget
+```Install-Package LiteQueue
 
 ### LiteQueue
 
