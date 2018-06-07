@@ -11,7 +11,7 @@ So, it was time to explore creating one. It was not necessary to fully re-invent
 
 ### Nuget
 
-```Install-Package LiteQueue
+```Install-Package LiteQueue```
 
 ### LiteQueue
 
