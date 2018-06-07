@@ -70,7 +70,7 @@ using (var db = new LiteDatabase("Queue.db"))
 	try
 	{
 		// Do something that may fail, i.e. a network call
-		// ...
+		// record.Payload contains the original string "Test"
 
 		// Removes record from queue
 		logs.Commit(record);
