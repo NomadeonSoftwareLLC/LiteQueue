@@ -3,7 +3,7 @@
   <metadata>
     <id>LiteQueue</id>
 	<title>LiteQueue</title>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <authors>Nick Bushby</authors>
     <owners>Nick Bushby</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -13,6 +13,7 @@
 	<summary>Lightweight, persisted, thread safe, (optionally) transactional, FIFO queue built on LiteDB.</summary>
     <copyright>2018 by Nomadeon Software LLC</copyright>
     <tags>LiteDB, MSMQ, Queue</tags>
+	<releaseNotes>Fixed typo in ResetOrphans method</releaseNotes> 
     <repository type="Git" url="https://github.com/NomadeonSoftwareLLC/LiteQueue" />
     <dependencies>
       <group targetFramework=".NETStandard2.0">
