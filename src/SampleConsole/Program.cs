@@ -18,7 +18,7 @@ namespace SampleConsole
                 // Recommended on startup to reset anything that was checked out but not committed or aborted. 
                 // Or call CurrentCheckouts to inspect them and abort yourself. See github page for
                 // notes regarding duplicate messages.
-                logs.ResetOrhpans();
+                logs.ResetOrphans();
 
                 // Adds record to queue
                 logs.Enqueue("Test");

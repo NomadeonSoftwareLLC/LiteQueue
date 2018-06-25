@@ -151,7 +151,7 @@ namespace LiteQueue
         {
             if (!_transactional)
             {
-                throw new InvalidOperationException("Cannot call ResetOrhpans unless queue is transactional");
+                throw new InvalidOperationException("Cannot call " + nameof(CurrentCheckouts) + " unless queue is transactional");
             }
 
             var records = _collection.Find(item => item.IsCheckedOut);
@@ -162,11 +162,11 @@ namespace LiteQueue
         /// Aborts all currently checked out items. Equivalent of calling <see cref="CurrentCheckouts"/> followed by <see cref="Abort(IEnumerable{QueueEntry{T}})"/>
         /// </summary>
         /// <exception cref="InvalidOperationException">Thrown when queue is not transactional</exception>
-        public void ResetOrhpans()
+        public void ResetOrphans()
         {
             if (!_transactional)
             {
-                throw new InvalidOperationException("Cannot call ResetOrhpans unless queue is transactional");
+                throw new InvalidOperationException("Cannot call " + nameof(ResetOrphans) + " unless queue is transactional");
             }
 
             var checkouts = CurrentCheckouts();
@@ -182,7 +182,7 @@ namespace LiteQueue
         {
             if (!_transactional)
             {
-                throw new InvalidOperationException("Cannot call Abort unless queue is transactional");
+                throw new InvalidOperationException("Cannot call " + nameof(Abort) + " unless queue is transactional");
             }
             else if (item == null)
             {
@@ -220,7 +220,7 @@ namespace LiteQueue
 
             if (!_transactional)
             {
-                throw new InvalidOperationException("Cannot call Commit unless queue is transactional");
+                throw new InvalidOperationException("Cannot call " + nameof(Commit) + " unless queue is transactional");
             }
 
             BsonValue id = new BsonValue(item.Id);

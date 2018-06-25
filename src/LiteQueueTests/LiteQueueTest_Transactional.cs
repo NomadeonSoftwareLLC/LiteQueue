@@ -158,7 +158,7 @@ namespace LiteQueueTests
 
             Assert.AreEqual(1, logs.CurrentCheckouts().Count);
 
-            logs.ResetOrhpans();
+            logs.ResetOrphans();
 
             Assert.AreEqual(0, logs.CurrentCheckouts().Count);
         }

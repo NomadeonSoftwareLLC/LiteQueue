@@ -131,7 +131,7 @@ namespace LiteQueueTests
 
             var records = logs.Dequeue(1);
 
-            logs.ResetOrhpans();
+            logs.ResetOrphans();
         }
 
         [TestMethod]
