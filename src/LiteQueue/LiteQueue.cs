@@ -51,6 +51,16 @@ namespace LiteQueue
             _transactional = transactional;
             _collection.EnsureIndex(x => x.IsCheckedOut);
         }
+        /// <summary>
+        /// Creates a collection for you in the database, collection's name is  Type name
+        /// </summary>
+        /// <param name="db">The LiteDB database. You are responsible for its lifecycle (using/dispose)</param>
+        /// <param name="transactional">Whether the queue should use transaction logic, default true</param>
+        public LiteQueue(LiteDatabase db, bool transactional = true)
+        {
+            _collection = db.GetCollection<QueueEntry<T>>(typeof(T).Name);
+            _transactional = transactional;
+        }
 
         /// <summary>
         /// Adds a single item to queue. See <see cref="Enqueue(IEnumerable{T})"/> for adding a batch.
