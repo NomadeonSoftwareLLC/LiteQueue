@@ -11,7 +11,7 @@
     <RepositoryType>Git</RepositoryType>
     <PackageTags>LiteDB, MSMQ, Queue</PackageTags>
     <PackageLicenseUrl>https://github.com/NomadeonSoftwareLLC/LiteQueue/blob/master/LICENSE</PackageLicenseUrl>
-    <Version>1.0.2</Version>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

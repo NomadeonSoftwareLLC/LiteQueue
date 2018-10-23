@@ -49,10 +49,11 @@ namespace LiteQueue
         {
             _collection = collection;
             _transactional = transactional;
+            _collection.EnsureIndex(x => x.Id);
             _collection.EnsureIndex(x => x.IsCheckedOut);
         }
         /// <summary>
-        /// Creates a collection for you in the database, collection's name is  Type name
+        /// Creates a collection for you in the database, collection's name is  <typeparamref name="T"/>
         /// </summary>
         /// <param name="db">The LiteDB database. You are responsible for its lifecycle (using/dispose)</param>
         /// <param name="transactional">Whether the queue should use transaction logic, default true</param>
