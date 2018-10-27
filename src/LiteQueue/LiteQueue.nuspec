@@ -2,8 +2,8 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2012/06/nuspec.xsd">
   <metadata>
     <id>LiteQueue</id>
-	<title>LiteQueue</title>
-    <version>1.0.1</version>
+	 <title>LiteQueue</title>
+    <Version>1.1.0</Version>
     <authors>Nick Bushby</authors>
     <owners>Nick Bushby</owners>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

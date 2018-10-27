@@ -1,7 +1,7 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFrameworks>netstandard1.3;netstandard2.0;net40;net35</TargetFrameworks>
     <Authors>Nick Bushby</Authors>
     <Company>Nomadeon Software LLC</Company>
     <Description>Lightweight, persisted, thread safe, (optionally) transactional, FIFO queue built on LiteDB.</Description>
@@ -11,11 +11,11 @@
     <RepositoryType>Git</RepositoryType>
     <PackageTags>LiteDB, MSMQ, Queue</PackageTags>
     <PackageLicenseUrl>https://github.com/NomadeonSoftwareLLC/LiteQueue/blob/master/LICENSE</PackageLicenseUrl>
-    <Version>1.0.1</Version>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LiteDB" Version="4.1.2" />
+    <PackageReference Include="LiteDB" Version="4.1.4" />
   </ItemGroup>
 
 </Project>
