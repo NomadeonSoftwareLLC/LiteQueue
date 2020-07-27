@@ -22,7 +22,7 @@ namespace LiteQueueTests
         [TestInitialize]
         public void Init()
         {
-            _db = new LiteDatabase("LiteQueueTest.db");
+            _db = new LiteDatabase("Filename=LiteQueueTest.db;connection=shared");
             _db.DropCollection(_collectionName);
         }
 
