@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30320.27
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiteQueue", "LiteQueue\LiteQueue.csproj", "{E72D1D9B-0DFB-4696-8255-ABC82EC02682}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SampleConsole", "SampleConsole\SampleConsole.csproj", "{01FEA2BC-6B47-4C5D-AE9A-F7A0BCF4D15C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteQueueTests", "LiteQueueTests\LiteQueueTests.csproj", "{83153733-493B-469C-8484-8B7DDEA9474E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LiteQueueTests", "LiteQueueTests\LiteQueueTests.csproj", "{83153733-493B-469C-8484-8B7DDEA9474E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

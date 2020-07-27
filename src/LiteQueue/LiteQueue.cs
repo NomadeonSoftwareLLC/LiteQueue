@@ -13,7 +13,7 @@ namespace LiteQueue
     /// </summary>
     public class LiteQueue<T>
     {
-        LiteCollection<QueueEntry<T>> _collection;
+        ILiteCollection<QueueEntry<T>> _collection;
         bool _transactional = true;
         readonly object _dequeueLock = new object();
 
@@ -45,7 +45,7 @@ namespace LiteQueue
         /// </summary>
         /// <param name="collection">A LiteDB collection.</param>
         /// <param name="transactional">Whether the queue should use transaction logic, default true</param>
-        public LiteQueue(LiteCollection<QueueEntry<T>> collection, bool transactional = true)
+        public LiteQueue(ILiteCollection<QueueEntry<T>> collection, bool transactional = true)
         {
             _collection = collection;
             _transactional = transactional;
@@ -264,7 +264,7 @@ namespace LiteQueue
         /// </summary>
         public void Clear()
         {
-            _collection.Delete(x => true);
+            _collection.DeleteAll();
         }
     }
 }
