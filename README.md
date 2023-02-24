@@ -33,6 +33,14 @@ By default LiteQueue uses transactional logic. In this mode, `Dequeue` will flag
 
 To turn transactional logic off, set transactional to false in the constructor. Some methods like `Commit` and `Abort` will throw `InvalidOperationException` if the queue is not transactional. I debated this as it makes it annoying to switch between the two modes, but I want to fail safe if you are trying to use transactional logic when the queue is not in that mode.
 
+### Threading
+
+If accessing the same queue from multiple threads, each thread must reference the same LiteQueue instance to ensure correct locking. If you encounter the following exception, suspect a violation of this rule as the cause:
+```
+SynchronizationLockException: Object synchronization method was called from an unsynchronized block of code.
+```
+This is a limitation of LiteDB after version 5.08.
+
 ### Message Duplication
 Using a queue such as this to send messages to another system, there are two ways in which the receiver could see a duplicate message. The first is when the receiver gets the message, commits it, and sends its ACK but the sender fails to see the ACK (think cellular network). Your code will timeout and logic will trigger a resend. The other possibility is that you receive the final ACK but you get halted (process crash, power cycle) before you can remove the message from your local queue.
 
@@ -87,4 +95,4 @@ using (var db = new LiteDatabase("Queue.db"))
 
 [MIT](https://github.com/NomadeonSoftwareLLC/LiteQueue/blob/master/LICENSE)
 
-Copyright (C) 2018 by Nomadeon Software LLC
+Copyright (C) by Nomadeon Software LLC
