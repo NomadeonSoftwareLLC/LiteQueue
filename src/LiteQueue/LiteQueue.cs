@@ -15,8 +15,9 @@ namespace LiteQueue
     public class LiteQueue<T>
     {
         ILiteCollection<QueueEntry<T>> _collection;
+        readonly object _collectionLock = new object();
+
         bool _transactional = true;
-        readonly object _dequeueLock = new object();
 
         /// <summary>
         /// Impacts operation of <see cref="Dequeue"/> method. Can only be set once in constructor.
@@ -77,7 +78,10 @@ namespace LiteQueue
 
             QueueEntry<T> insert = new QueueEntry<T>(item);
 
-            _collection.Insert(insert);
+            lock (_collectionLock)
+            {
+                _collection.Insert(insert);
+            }
         }
 
         /// <summary>
@@ -92,7 +96,10 @@ namespace LiteQueue
                 inserts.Add(new QueueEntry<T>(item));
             }
 
-            _collection.InsertBulk(inserts);
+            lock (_collectionLock)
+            {
+                _collection.InsertBulk(inserts);
+            }
         }
 
         /// <summary>
@@ -104,14 +111,17 @@ namespace LiteQueue
         /// <returns>An item if found or null</returns>
         public QueueEntry<T> Dequeue()
         {
-            var result = Dequeue(1);
-            if (result.Count == 0)
+            lock (_collectionLock)
             {
-                return null;
-            }
-            else
-            {
-                return result[0];
+                var result = Dequeue(1);
+                if (result.Count == 0)
+                {
+                    return null;
+                }
+                else
+                {
+                    return result[0];
+                }
             }
         }
 
@@ -122,9 +132,9 @@ namespace LiteQueue
         /// <returns>The items found or an empty collection (never null)</returns>
         public List<QueueEntry<T>> Dequeue(int batchSize)
         {
-            if (_transactional)
+            lock (_collectionLock)
             {
-                lock (_dequeueLock)
+                if (_transactional)
                 {
                     // WARN: LiteDB above 5.0.8 requires applying OrderBy or the records are not returned in
                     // deterministic order (unit tests would sporadically fail).
@@ -141,20 +151,20 @@ namespace LiteQueue
 
                     return result;
                 }
-            }
-            else
-            {
-                // WARN: LiteDB above 5.0.8 requires applying OrderBy or the records are not returned in
-                // deterministic order (unit tests would sporadically fail).
-                var items = _collection.Find(x => true, 0).OrderBy(x => x.Id).Take(batchSize);
-                var result = new List<QueueEntry<T>>(items);
-
-                foreach (var item in items)
+                else
                 {
-                    _collection.Delete(new BsonValue(item.Id));
-                }
+                    // WARN: LiteDB above 5.0.8 requires applying OrderBy or the records are not returned in
+                    // deterministic order (unit tests would sporadically fail).
+                    var items = _collection.Find(x => true, 0).OrderBy(x => x.Id).Take(batchSize);
+                    var result = new List<QueueEntry<T>>(items);
 
-                return result;
+                    foreach (var item in items)
+                    {
+                        _collection.Delete(new BsonValue(item.Id));
+                    }
+
+                    return result;
+                }
             }
         }
 
@@ -170,8 +180,11 @@ namespace LiteQueue
                 throw new InvalidOperationException("Cannot call " + nameof(CurrentCheckouts) + " unless queue is transactional");
             }
 
-            var records = _collection.Find(item => item.IsCheckedOut);
-            return new List<QueueEntry<T>>(records);
+            lock (_collectionLock)
+            {
+                var records = _collection.Find(item => item.IsCheckedOut);
+                return new List<QueueEntry<T>>(records);
+            }
         }
 
         /// <summary>
@@ -185,8 +198,11 @@ namespace LiteQueue
                 throw new InvalidOperationException("Cannot call " + nameof(ResetOrphans) + " unless queue is transactional");
             }
 
-            var checkouts = CurrentCheckouts();
-            Abort(checkouts);
+            lock (_collectionLock)
+            {
+                var checkouts = CurrentCheckouts();
+                Abort(checkouts);
+            }
         }
 
         /// <summary>
@@ -205,8 +221,11 @@ namespace LiteQueue
                 throw new ArgumentNullException(nameof(item));
             }
 
-            item.IsCheckedOut = false;
-            _collection.Update(item);
+            lock (_collectionLock)
+            {
+                item.IsCheckedOut = false;
+                _collection.Update(item);
+            }
         }
 
         /// <summary>
@@ -239,8 +258,11 @@ namespace LiteQueue
                 throw new InvalidOperationException("Cannot call " + nameof(Commit) + " unless queue is transactional");
             }
 
-            BsonValue id = new BsonValue(item.Id);
-            _collection.Delete(id);
+            lock (_collectionLock)
+            {
+                BsonValue id = new BsonValue(item.Id);
+                _collection.Delete(id);
+            }
         }
 
         /// <summary>
@@ -261,7 +283,10 @@ namespace LiteQueue
         /// </summary>
         public int Count()
         {
-            return _collection.Count();
+            lock (_collectionLock)
+            {
+                return _collection.Count();
+            }
         }
 
         /// <summary>
@@ -269,7 +294,10 @@ namespace LiteQueue
         /// </summary>
         public void Clear()
         {
-            _collection.DeleteAll();
+            lock (_collectionLock)
+            {
+                _collection.DeleteAll();
+            }
         }
     }
 }

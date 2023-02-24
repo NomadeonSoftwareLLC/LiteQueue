@@ -13,6 +13,8 @@ namespace LiteQueueTests
     public class LiteQueueTest_Threaded
     {
         LiteDatabase _db;
+        LiteQueue<int> _queue;
+
         const string _collectionName = "threadedtestcollection";
 
         /// <summary>
@@ -42,6 +44,8 @@ namespace LiteQueueTests
         {
             _db = new LiteDatabase("Filename=LiteQueueTest.db;connection=shared");
             _db.DropCollection(_collectionName);
+
+            _queue = new LiteQueue<int>(_db, _collectionName);
         }
 
         [TestCleanup]
@@ -53,20 +57,16 @@ namespace LiteQueueTests
         [TestMethod]
         public void Single()
         {
-            var queue = new LiteQueue<int>(_db, _collectionName);
-
-            Action producer = delegate () { Producer(queue); };
-            Action consumer = delegate () { Consumer(queue); };
+            Action producer = delegate () { Producer(_queue); };
+            Action consumer = delegate () { Consumer(_queue); };
             RunTasks(producer, consumer, producerCount: 1, consumerCount: 1);
         }
 
         [TestMethod]
         public void MultipleProducers()
         {
-            var queue = new LiteQueue<int>(_db, _collectionName);
-
-            Action producer = delegate () { Producer(queue); };
-            Action consumer = delegate () { Consumer(queue); };
+            Action producer = delegate () { Producer(_queue); };
+            Action consumer = delegate () { Consumer(_queue); };
             RunTasks(producer, consumer, producerCount: 10 , consumerCount: 1);
         }
 
@@ -74,20 +74,16 @@ namespace LiteQueueTests
         [TestMethod]
         public void MultipleConsumers()
         {
-            var queue = new LiteQueue<int>(_db, _collectionName);
-
-            Action producer = delegate () { Producer(queue); };
-            Action consumer = delegate () { Consumer(queue); };
+            Action producer = delegate () { Producer(_queue); };
+            Action consumer = delegate () { Consumer(_queue); };
             RunTasks(producer, consumer, producerCount: 1, consumerCount: 10);
         }
 
         [TestMethod]
         public void MultipleProducersMultipleConsumers()
         {
-            var queue = new LiteQueue<int>(_db, _collectionName);
-
-            Action producer = delegate () { Producer(queue); };
-            Action consumer = delegate () { Consumer(queue); };
+            Action producer = delegate () { Producer(_queue); };
+            Action consumer = delegate () { Consumer(_queue); };
             RunTasks(producer, consumer, producerCount: 10, consumerCount: 10);
         }
 
@@ -95,10 +91,8 @@ namespace LiteQueueTests
         [ExpectedException(typeof(DuplicateException))]
         public void Duplicate()
         {
-            var queue = new LiteQueue<int>(_db, _collectionName);
-
-            Action producer = delegate () { BadProducer(queue); };
-            Action consumer = delegate () { Consumer(queue); };
+            Action producer = delegate () { BadProducer(_queue); };
+            Action consumer = delegate () { Consumer(_queue); };
             RunTasks(producer, consumer, producerCount: 1, consumerCount: 1);
         }
 
@@ -111,8 +105,6 @@ namespace LiteQueueTests
         /// <param name="consumer">Function to run for each consumer</param>
         void RunTasks(Action producer, Action consumer, int producerCount, int consumerCount)
         {
-            var queue = new LiteQueue<int>(_db, _collectionName);
-
             List<Task> producers = new List<Task>();
             for (int i = 0; i < producerCount; i++)
             {
@@ -130,7 +122,7 @@ namespace LiteQueueTests
             }
 
             Task.WaitAll(producers.ToArray());
-            WaitForEmptyQueue(queue);
+            WaitForEmptyQueue(_queue);
 
             _keepRunning = false;
             try
