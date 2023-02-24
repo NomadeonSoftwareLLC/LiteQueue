@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0;net45</TargetFrameworks>
+    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
     <Authors>Nick Bushby</Authors>
     <Company>Nomadeon Software LLC</Company>
     <Description>Lightweight, persisted, thread safe, (optionally) transactional, FIFO queue built on LiteDB.</Description>
@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="LiteDB" Version="5.0.8" />
+    <PackageReference Include="LiteDB" Version="5.0.15" />
   </ItemGroup>
 
 </Project>

@@ -2,6 +2,7 @@
 using LiteDB;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LiteQueue
 {
@@ -125,9 +126,11 @@ namespace LiteQueue
             {
                 lock (_dequeueLock)
                 {
-                    var items = _collection.Find(x => !x.IsCheckedOut, 0, batchSize);
+                    // WARN: LiteDB above 5.0.8 requires applying OrderBy or the records are not returned in
+                    // deterministic order (unit tests would sporadically fail).
+                    var items = _collection.Find(x => !x.IsCheckedOut, 0).OrderBy(x => x.Id).Take(batchSize);
 
-                    // Capture the result before changing IsCheckedOut, otherwise items is being changed
+                    // Capture the result before changing IsCheckedOut, otherwise collection is being changed while iterating
                     var result = new List<QueueEntry<T>>(items);
 
                     foreach (var item in result)
@@ -141,7 +144,9 @@ namespace LiteQueue
             }
             else
             {
-                var items = _collection.Find(x => true, 0, batchSize);
+                // WARN: LiteDB above 5.0.8 requires applying OrderBy or the records are not returned in
+                // deterministic order (unit tests would sporadically fail).
+                var items = _collection.Find(x => true, 0).OrderBy(x => x.Id).Take(batchSize);
                 var result = new List<QueueEntry<T>>(items);
 
                 foreach (var item in items)
