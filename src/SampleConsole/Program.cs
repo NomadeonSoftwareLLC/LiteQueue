@@ -1,4 +1,4 @@
-﻿/* Copyright 2018 by Nomadeon Software LLC. Licensed uinder MIT: https://opensource.org/licenses/MIT */
+﻿/* Copyright 2024 by Nomadeon LLC. Licensed uinder MIT: https://opensource.org/licenses/MIT */
 using LiteDB;
 using LiteQueue;
 using System;

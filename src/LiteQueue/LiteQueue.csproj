@@ -3,18 +3,17 @@
   <PropertyGroup>
     <TargetFrameworks>net8.0</TargetFrameworks>
     <Authors>Nick Bushby</Authors>
-    <Company>Nomadeon Software LLC</Company>
+    <Company>Nomadeon LLC</Company>
     <Description>Lightweight, persisted, thread safe, (optionally) transactional, FIFO queue built on LiteDB.</Description>
-    <Copyright>Nomadeon Software LLC</Copyright>
+    <Copyright>Nomadeon LLC</Copyright>
     <PackageProjectUrl>http://nomadeon.com/2018/06/07/litequeue/</PackageProjectUrl>
     <RepositoryUrl>https://github.com/NomadeonSoftwareLLC/LiteQueue</RepositoryUrl>
     <RepositoryType>Git</RepositoryType>
     <PackageTags>LiteDB, MSMQ, Queue</PackageTags>
     <PackageLicenseUrl>https://github.com/NomadeonSoftwareLLC/LiteQueue/blob/master/LICENSE</PackageLicenseUrl>
-    <Version>1.2.0</Version>
+    <Version>1.3.0</Version>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageReleaseNotes>Updated to latest LiteDB
-See README for new threading requirements</PackageReleaseNotes>
+    <PackageReleaseNotes>See ReleaseNotes.md</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
