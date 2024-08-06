@@ -3,26 +3,26 @@
   <metadata>
     <id>LiteQueue</id>
 	 <title>LiteQueue</title>
-    <Version>1.1.0</Version>
+    <Version>1.3.0</Version>
     <authors>Nick Bushby</authors>
     <owners>Nick Bushby</owners>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <licenseUrl>https://github.com/NomadeonSoftwareLLC/LiteQueue/blob/master/LICENSE</licenseUrl>
-    <projectUrl>http://nomadeon.com/2018/06/07/litequeue/ </projectUrl>
+    <projectUrl>https://github.com/NomadeonSoftwareLLC/LiteQueue</projectUrl>
     <description>Lightweight, persisted, thread safe, (optionally) transactional, FIFO queue built on LiteDB.</description>
 	<summary>Lightweight, persisted, thread safe, (optionally) transactional, FIFO queue built on LiteDB.</summary>
-    <copyright>2018 by Nomadeon Software LLC</copyright>
+    <copyright>2024 by Nomadeon LLC</copyright>
     <tags>LiteDB, MSMQ, Queue</tags>
-	<releaseNotes>Fixed typo in ResetOrphans method</releaseNotes> 
+	<releaseNotes>See ReleaseNotes.md</releaseNotes> 
     <repository type="Git" url="https://github.com/NomadeonSoftwareLLC/LiteQueue" />
     <dependencies>
-      <group targetFramework=".NETStandard2.0">
-        <dependency id="LiteDB" version="4.1.2" exclude="Build,Analyzers" />
+      <group targetFramework="net8.0">
+        <dependency id="LiteDB" version="5.0.21" exclude="Build,Analyzers" />
       </group>
     </dependencies>
   </metadata>
   <files>
 	<file src="..\..\README.md" target="readme.md" />
-    <file src="bin\Release\netstandard2.0\LiteQueue.dll" target="lib\netstandard2.0\LiteQueue.dll" />
+    <file src="bin\Release\net8.0\LiteQueue.dll" target="lib\net8.0\LiteQueue.dll" />
   </files>
 </package>
