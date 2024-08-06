@@ -12,11 +12,12 @@ namespace LiteQueue
     /// Suitable for use on clients as a lightweight, portable alternative to MSMQ. Not recommended for use 
     /// on large server side applications due to performance limitations of LiteDB.
     /// </summary>
-    public class LiteQueue<T>
+    public class LiteQueue<T> : IQueue<T>
     {
-        ILiteCollection<QueueEntry<T>> _collection;
+        readonly ILiteCollection<QueueEntry<T>> _collection;
         readonly object _collectionLock = new object();
 
+        Func<QueueEntry<T>, IComparable> _orderFunc = x => x.Id;
         bool _transactional = true;
 
         /// <summary>
@@ -138,7 +139,7 @@ namespace LiteQueue
                 {
                     // WARN: LiteDB above 5.0.8 requires applying OrderBy or the records are not returned in
                     // deterministic order (unit tests would sporadically fail).
-                    var items = _collection.Find(x => !x.IsCheckedOut, 0).OrderBy(x => x.Id).Take(batchSize);
+                    var items = _collection.Find(x => !x.IsCheckedOut, 0).OrderBy(_orderFunc).Take(batchSize);
 
                     // Capture the result before changing IsCheckedOut, otherwise collection is being changed while iterating
                     var result = new List<QueueEntry<T>>(items);
@@ -155,7 +156,7 @@ namespace LiteQueue
                 {
                     // WARN: LiteDB above 5.0.8 requires applying OrderBy or the records are not returned in
                     // deterministic order (unit tests would sporadically fail).
-                    var items = _collection.Find(x => true, 0).OrderBy(x => x.Id).Take(batchSize);
+                    var items = _collection.Find(x => true, 0).OrderBy(_orderFunc).Take(batchSize);
                     var result = new List<QueueEntry<T>>(items);
 
                     foreach (var item in items)
@@ -298,6 +299,11 @@ namespace LiteQueue
             {
                 _collection.DeleteAll();
             }
+        }
+
+        public void SetOrder<TKey>(Func<QueueEntry<T>, TKey> selector) where TKey : IComparable
+        {
+            _orderFunc = entry => selector(entry);
         }
     }
 }

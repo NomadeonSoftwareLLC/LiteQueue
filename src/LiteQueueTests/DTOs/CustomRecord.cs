@@ -14,5 +14,6 @@ namespace LiteQueueTests
 
         public double SensorReading { get; set; }
         public string LogValue { get; set; }
+        public DateTime Timestamp { get; set; }
     }
 }

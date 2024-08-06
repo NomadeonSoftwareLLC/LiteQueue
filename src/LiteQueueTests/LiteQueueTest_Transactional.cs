@@ -3,6 +3,7 @@ using LiteDB;
 using LiteQueue;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace LiteQueueTests
 {
@@ -237,45 +238,14 @@ namespace LiteQueueTests
         {
             var logs = CreateQueue<CustomRecord>();
 
-            var record1 = new CustomRecord()
-            {
-                Device = new DeviceLocation()
-                {
-                    LatitudeDegrees = 120,
-                    LongitudeDegrees = 30
-                },
-                LogValue = "test",
-                SensorReading = 2.2
-            };
-            var record2 = new CustomRecord()
-            {
-                Device = new DeviceLocation()
-                {
-                    LatitudeDegrees = 121,
-                    LongitudeDegrees = 31
-                },
-                LogValue = "test2",
-                SensorReading = 2.3
-            };
-            var record3 = new CustomRecord()
-            {
-                Device = new DeviceLocation()
-                {
-                    LatitudeDegrees = 122,
-                    LongitudeDegrees = 32
-                },
-                LogValue = "test3",
-                SensorReading = 2.4
-            };
-
-            var batch = new List<CustomRecord>() { record1, record2, record3 };
+            var batch = SampleData.GetCustomRecords();
 
             logs.Enqueue(batch);
 
             var records = logs.Dequeue(1);
             Assert.AreEqual(1, records.Count);
             Assert.AreEqual(3, logs.Count());
-            Assert.AreEqual(record1.LogValue, records[0].Payload.LogValue);
+            Assert.AreEqual(batch[0].LogValue, records[0].Payload.LogValue);
             Assert.AreEqual(1, logs.CurrentCheckouts().Count);
 
             logs.Abort(records);
@@ -292,8 +262,8 @@ namespace LiteQueueTests
             Assert.AreEqual(2, logs.Count());
             Assert.AreEqual(2, logs.CurrentCheckouts().Count);
 
-            Assert.AreEqual(record2.LogValue, records[0].Payload.LogValue);
-            Assert.AreEqual(record3.LogValue, records[1].Payload.LogValue);
+            Assert.AreEqual(batch[1].LogValue, records[0].Payload.LogValue);
+            Assert.AreEqual(batch[2].LogValue, records[1].Payload.LogValue);
 
             logs.Commit(records);
             Assert.AreEqual(0, logs.Count());
@@ -301,6 +271,25 @@ namespace LiteQueueTests
 
             records = logs.Dequeue(2);
             Assert.AreEqual(0, records.Count);
+        }
+
+        [TestMethod]
+        public void CustomOrder()
+        {
+            var logs = CreateQueue<CustomRecord>();
+            logs.SetOrder((x) => { return x.Payload.Timestamp; });
+
+            var batch = SampleData.GetCustomRecords();
+            var ordered = batch.OrderBy(x => x.Timestamp);
+
+            logs.Enqueue(batch);
+
+            foreach (var record in ordered)
+            {
+                var records = logs.Dequeue(1);
+                Assert.AreEqual(1, records.Count);
+                Assert.AreEqual(record.LogValue, records[0].Payload.LogValue);
+            }
         }
     }
  }
