@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>net8.0</TargetFrameworks>
     <Authors>Nick Bushby</Authors>
     <Company>Nomadeon Software LLC</Company>
     <Description>Lightweight, persisted, thread safe, (optionally) transactional, FIFO queue built on LiteDB.</Description>
